@@ -14,7 +14,7 @@ var wg sync.WaitGroup
 func main() {
 	wg.Add(1)
 
-	api := tele.New(token)
+	api := tele.New(*token)
 
 	go api.UpdatesLoop()
 	go pongMessage(api)
