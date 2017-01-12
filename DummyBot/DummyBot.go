@@ -16,7 +16,7 @@ func main() {
 
 	api := tele.New(*token)
 
-	go api.UpdatesLoop()
+	go api.UpdatesLoop(1000)
 	go pongMessage(api)
 
 	wg.Wait()

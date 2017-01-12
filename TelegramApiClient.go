@@ -28,7 +28,7 @@ func New(token string) *TelegramApi {
 	}
 }
 
-func (api *TelegramApi) UpdatesLoop() {
+func (api *TelegramApi) UpdatesLoop(frequency time.Duration) {
 	defer close(api.Messages)
 
 	fmt.Println("Telegram auto-update activited")
@@ -36,7 +36,7 @@ func (api *TelegramApi) UpdatesLoop() {
 	offset := -1
 	for {
 		select {
-		case <-time.After(500 * time.Millisecond):
+		case <-time.After(frequency * time.Millisecond):
 			var updatesList []Update
 			var err error
 			if offset == -1 {

@@ -14,7 +14,7 @@ func TestParseResponse(t *testing.T) {
 		StatusCode: http.StatusOK,
 		Body:       body(`{"ok": true, "result": []}`),
 	}
-	err := TelegramApi{}.ParseResponse(res, &Update{})
+	err := ParseResponse(res, &Update{})
 	if err != nil {
 		t.Error("not ok", err)
 	}
@@ -28,7 +28,7 @@ func TestGetMe(t *testing.T) {
 		},
 	}
 	api := TelegramApi{client: cli}
-	user := api.GetMe()
+	user, _ := api.GetMe()
 	if user.Id != 236079868 {
 		t.Error("not ok", user)
 	}
@@ -42,7 +42,7 @@ func TestGetUpdates(t *testing.T) {
 		},
 	}
 	api := TelegramApi{client: cli}
-	resp := api.GetSpecifiedUpdates(1, 1, 0)
+	resp, _ := api.GetSpecifiedUpdates(1, 1, 0)
 	if len(resp) == 1 && resp[0].UpdateId != 934217543 {
 		t.Error("fail", resp)
 	}
@@ -53,12 +53,12 @@ type clientMock struct {
 	Response *http.Response
 }
 
-func (client *clientMock) Get(endpoint string, queryParams map[string]string) (resp *http.Response, err error) {
-	return client.Response, nil
+func (client *clientMock) Get(endpoint Endpoint, queryParams map[string]string, objectToReturn interface{}) (err error) {
+	return nil
 }
 
-func (client *clientMock) Post(endpoint string, queryParams map[string]string) (resp *http.Response, err error) {
-	return client.Response, nil
+func (client *clientMock) Post(endpoint Endpoint, data interface{}, objectToReturn interface{}) (err error) {
+	return nil
 }
 
 func body(json string) io.ReadCloser {
